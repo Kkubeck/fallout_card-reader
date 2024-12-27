@@ -16,8 +16,8 @@ fallout_card-reader/
 │   ├── IMG_2387.jpg
 │   ├── 2024-12-27 09-36.pdf
 
-## Main Program Workflow
 ```
+## Main Program Workflow
 1. Capture card image.
 2. Preprocess image for OCR.
 3. Extract text using OCR.
