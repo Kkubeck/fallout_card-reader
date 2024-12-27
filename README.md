@@ -17,10 +17,14 @@ fallout_card-reader/
 │   ├── 2024-12-27 09-36.pdf
 
 ## Main Program Workflow
-
+```
 1. Capture card image.
 2. Preprocess image for OCR.
 3. Extract text using OCR.
 4. Detect the language of the extracted text.
 5. Translate text to English if necessary.
 6. Convert text to speech.
+
+### Decisions
+1. Keep it pythonic
+2. Since final product will be deployed to Jetson Nano use cloud-based solution when possible
