@@ -1,11 +1,13 @@
 # Fallout Card Reader Program - Scaffolding with Function Stubs and Pseudo-code
 
 # Import necessary modules
-def import_libraries():
-    """
-    Import required libraries for image capture, OCR, text-to-speech, language detection, and translation.
-    """
-    pass
+import cv2
+import numpy as np
+import pytesseract
+from langdetect import detect as langdetect
+from googletrans import Translator
+from gtts import gTTS
+import os
 
 def capture_card_image():
     """
