@@ -15,7 +15,39 @@ def capture_card_image():
     Returns:
         image: The captured image in a format suitable for processing.
     """
-    pass
+    # Open the camera (assuming the first camera device)
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        raise Exception("Could not open camera. Ensure it is connected and accessible.")
+
+    print("Press 's' to capture the image, or 'q' to quit.")
+
+    while True:
+        # Read frame from the camera
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to capture frame.")
+            continue
+
+        # Display the camera feed
+        cv2.imshow("Capture Card Image", frame)
+
+        # Wait for user input
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('s'):  # 's' to save
+            print("Image captured.")
+            captured_image = frame
+            break
+        elif key == ord('q'):  # 'q' to quit
+            print("Exiting capture.")
+            cap.release()
+            cv2.destroyAllWindows()
+            return None
+
+    # Release resources
+    cap.release()
+    cv2.destroyAllWindows()
+    return captured_image
 
 def preprocess_image(image):
     """
@@ -79,5 +111,4 @@ def main():
     pass
 
 if __name__ == "__main__":
-    import_libraries()
     main()
