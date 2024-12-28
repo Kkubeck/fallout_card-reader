@@ -28,3 +28,4 @@ fallout_card-reader/
 ### Decisions
 1. Keep it pythonic
 2. Since final product will be deployed to Jetson Nano use cloud-based solution when possible
+3. Test device switching in openCV with USB. Set camera_index = 1 for connected usb device
