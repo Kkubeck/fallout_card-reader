@@ -1,4 +1,4 @@
-# Fallout Card Reader Program - Scaffolding with Function Stubs and Pseudo-code
+# Fallout Card Reader Program - Framework with Camera Testing in Main
 
 # Import necessary modules
 import cv2
@@ -9,21 +9,22 @@ from googletrans import Translator
 from gtts import gTTS
 import os
 
-def capture_card_image():
+def capture_card_image(camera_index=0):
     """
-    Capture an image of the card using the device's camera.
+    Capture an image of the card using the specified camera.
+    Args:
+        camera_index: The index of the camera to use (default is 0 for the main camera).
     Returns:
         image: The captured image in a format suitable for processing.
     """
-    # Open the camera (assuming the first camera device)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(camera_index, cv2.CAP_DSHOW)  # Use DirectShow backend for Windows
     if not cap.isOpened():
-        raise Exception("Could not open camera. Ensure it is connected and accessible.")
+        raise Exception(f"Could not open camera {camera_index}. Ensure it is connected and accessible.")
 
     print("Press 's' to capture the image, or 'q' to quit.")
+    captured_image = None
 
     while True:
-        # Read frame from the camera
         ret, frame = cap.read()
         if not ret:
             print("Failed to capture frame.")
@@ -40,11 +41,8 @@ def capture_card_image():
             break
         elif key == ord('q'):  # 'q' to quit
             print("Exiting capture.")
-            cap.release()
-            cv2.destroyAllWindows()
-            return None
+            break
 
-    # Release resources
     cap.release()
     cv2.destroyAllWindows()
     return captured_image
@@ -100,15 +98,27 @@ def text_to_speech(text):
 
 def main():
     """
-    Main program workflow:
-    1. Capture card image.
-    2. Preprocess image for OCR.
-    3. Extract text using OCR.
-    4. Detect the language of the extracted text.
-    5. Translate text to English if necessary.
-    6. Convert text to speech.
+    Main program workflow with camera testing.
     """
-    pass
+    try:
+        print("Testing camera at index 1...")
+        camera_index = 1  # Default to the USB camera
+        cap = cv2.VideoCapture(camera_index, cv2.CAP_DSHOW)
+        if cap.isOpened():
+            print(f"Camera at index {camera_index} is accessible.")
+            cap.release()
+            image = capture_card_image(camera_index=camera_index)
+            if image is not None:
+                filename = f"test_captured_card.jpg"
+                cv2.imwrite(filename, image)
+                print(f"Image saved as '{filename}'.")
+            else:
+                print("No image captured.")
+        else:
+            print(f"Camera at index {camera_index} could not be accessed. Check the connection.")
+    except Exception as e:
+        print(f"An error occurred during capture: {e}")
 
 if __name__ == "__main__":
     main()
+
