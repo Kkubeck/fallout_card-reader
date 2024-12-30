@@ -103,7 +103,7 @@ if __name__ == "__main__":
         image = capture_card_image(camera_index=camera_index)
 
         if image is not None:
-            filename = "captured_card.jpg"
+            filename = "images/captured_card.jpg"
             cv2.imwrite(filename, image)
             print(f"Image saved as '{filename}'.")
         else:
