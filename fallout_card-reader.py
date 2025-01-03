@@ -59,13 +59,25 @@ def preprocess_image(image):
 
 def extract_text_from_image(image):
     """
-    Use OCR to extract text from the preprocessed image.
+    Use OCR to extract text from the image and detect its language.
     Args:
-        image: The preprocessed image.
+        image: The input image to process.
     Returns:
-        text: The text extracted from the image.
+        extracted_text: The text extracted from the image.
+        language_code: The detected language code.
     """
-    pass
+    try:
+        # Perform initial OCR with English as the default language
+        text_sample = pytesseract.image_to_string(image, lang='eng')[:100]  # Use the first 100 characters for language detection
+        detected_language = detect_language(text_sample) if text_sample.strip() else 'eng'
+
+        # Perform OCR again with the detected language
+        extracted_text = pytesseract.image_to_string(image, lang=detected_language)
+        return extracted_text, detected_language
+    except Exception as e:
+        print(f"Error extracting text: {e}")
+        return "", "eng"  # Return empty text and default language on failure
+
 
 def detect_language(text):
     """
@@ -98,15 +110,16 @@ def text_to_speech(text):
 
 if __name__ == "__main__":
     try:
-        print("Testing camera at index 0...")
-        camera_index = 1  # Default to the main camera
-        image = capture_card_image(camera_index=camera_index)
+        print("Extracting text from test image...")
+        image_path = "images/captured_card_test.jpg"
+        image = cv2.imread(image_path)
 
-        if image is not None:
-            filename = "images/captured_card.jpg"
-            cv2.imwrite(filename, image)
-            print(f"Image saved as '{filename}'.")
+        if image is None:
+            print("Error: Could not load the test image. Check the file path.")
         else:
-            print("No image captured.")
+            # Extract text from the image
+            extracted_text = extract_text_from_image(image)
+            print("Extracted Text:")
+            print(extracted_text)
     except Exception as e:
         print(f"An error occurred: {e}")
